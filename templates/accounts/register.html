@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Create account{% endblock %}
+{% block content %}
+<div class="max-w-xl mx-auto">
+  <h1 class="text-3xl font-bold mb-1">Create your account</h1>
+  <p class="text-ink/70 mb-6">Your height, weight and goal let us build a daily plan for you.</p>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <fieldset class="bg-white p-5 rounded-xl border border-leaf mb-5">
+      <legend class="display text-lg font-bold px-1">Account details</legend>
+      {% include "accounts/_field.html" with field=form.username %}
+      {% include "accounts/_field.html" with field=form.email %}
+      <div class="grid sm:grid-cols-2 gap-x-4">
+        {% include "accounts/_field.html" with field=form.password1 %}
+        {% include "accounts/_field.html" with field=form.password2 %}
+      </div>
+    </fieldset>
+    <fieldset class="bg-white p-5 rounded-xl border border-leaf mb-5">
+      <legend class="display text-lg font-bold px-1">About you</legend>
+      {% include "accounts/_field.html" with field=form.full_name %}
+      <div class="grid sm:grid-cols-2 gap-x-4">
+        {% include "accounts/_field.html" with field=form.date_of_birth %}
+        {% include "accounts/_field.html" with field=form.gender %}
+        {% include "accounts/_field.html" with field=form.height_cm %}
+        {% include "accounts/_field.html" with field=form.current_weight %}
+      </div>
+      {% include "accounts/_field.html" with field=form.fitness_goal %}
+    </fieldset>
+    <button type="submit" class="btn w-full">Create account</button>
+  </form>
+  <p class="mt-5 text-center text-sm">Already registered? <a href="{% url 'login' %}" class="font-semibold text-spruce underline">Log in</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-bold">Hi, {{ user.short_name }}</h1>
+<p class="text-ink/70 mb-6">Here is your plan for today.</p>
+
+{% if plan %}
+<section class="bg-spruce text-white rounded-2xl p-6 mb-6" aria-labelledby="plan-h">
+  <h2 id="plan-h" class="text-sm font-medium text-white/80">Daily calorie limit</h2>
+  <p class="display text-5xl font-bold">{{ plan.daily_cal_limit }} <span class="text-xl font-semibold text-white/80">kcal</span></p>
+  <dl class="grid grid-cols-2 gap-4 mt-5 pt-5 border-t border-white/25">
+    <div><dt class="text-sm text-white/80">Burn goal</dt><dd class="display text-2xl font-bold">{{ plan.daily_burn_goal }} kcal</dd></div>
+    <div><dt class="text-sm text-white/80">Distance goal</dt><dd class="display text-2xl font-bold">{{ plan.daily_dist_goal }} km</dd></div>
+  </dl>
+  <p class="text-xs text-white/70 mt-4">Plan generated {{ plan.generated_at|date:"M j, Y" }} for your goal: {{ user.fitness_goal }}.</p>
+</section>
+{% else %}
+<div class="bg-white border border-leaf rounded-xl p-5 mb-6">No active health plan yet. <a class="underline font-semibold text-spruce" href="{% url 'profile' %}">Update your profile</a> to generate one.</div>
+{% endif %}
+
+<div class="grid md:grid-cols-5 gap-6">
+  <section class="md:col-span-2 bg-white border border-leaf rounded-xl p-5" aria-labelledby="body-h">
+    <h2 id="body-h" class="display text-lg font-bold mb-3">Body summary</h2>
+    <dl class="space-y-2 text-sm">
+      <div class="flex justify-between"><dt class="text-ink/70">Current weight</dt><dd class="font-semibold">{{ user.current_weight }} kg</dd></div>
+      <div class="flex justify-between"><dt class="text-ink/70">Height</dt><dd class="font-semibold">{{ user.height_cm }} cm</dd></div>
+      <div class="flex justify-between"><dt class="text-ink/70">BMI</dt><dd class="font-semibold">{{ user.bmi }} ({{ user.bmi_category }})</dd></div>
+      <div class="flex justify-between"><dt class="text-ink/70">Age</dt><dd class="font-semibold">{{ user.age }}</dd></div>
+    </dl>
+    {% if recent_weights %}
+    <h3 class="font-semibold text-sm mt-5 mb-2">Recent weigh-ins</h3>
+    <ul class="text-sm space-y-1">{% for w in recent_weights %}<li class="flex justify-between"><span class="text-ink/70">{{ w.logged_date|date:"M j" }}</span><span>{{ w.recorded_weight }} kg</span></li>{% endfor %}</ul>
+    {% endif %}
+    <a href="{% url 'profile' %}" class="btn btn-ghost w-full mt-5">Edit profile</a>
+  </section>
+
+  <section class="md:col-span-3" aria-labelledby="mod-h">
+    <h2 id="mod-h" class="display text-lg font-bold mb-3">Coming next</h2>
+    <ul class="space-y-3">
+      <li class="bg-white border border-dashed border-spruce/40 rounded-xl p-4" aria-disabled="true">
+        <p class="font-semibold">GPS activity tracker</p><p class="text-sm text-ink/70">Track walking, jogging and hiking routes. Available in the next phase.</p></li>
+      <li class="bg-white border border-dashed border-spruce/40 rounded-xl p-4" aria-disabled="true">
+        <p class="font-semibold">Meal logger</p><p class="text-sm text-ink/70">Log meals and compare calories against your limit. Available in the next phase.</p></li>
+      <li class="bg-white border border-dashed border-spruce/40 rounded-xl p-4" aria-disabled="true">
+        <p class="font-semibold">Weight logs</p><p class="text-sm text-ink/70">See your weight trend over time. Available in the next phase.</p></li>
+    </ul>
+  </section>
+</div>
+{% endblock %}

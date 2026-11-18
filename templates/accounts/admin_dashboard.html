@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Admin dashboard{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-bold">Platform overview</h1>
+<p class="text-ink/70 mb-6">Signed in as {{ user.full_name }} (Admin). This view is read-only.</p>
+
+<div class="grid sm:grid-cols-3 gap-4 mb-6">
+  <div class="bg-spruce text-white rounded-xl p-5"><p class="text-sm text-white/80">Registered members</p><p class="display text-4xl font-bold">{{ total_members }}</p></div>
+  <div class="bg-white border border-leaf rounded-xl p-5"><p class="text-sm text-ink/70">Active health plans</p><p class="display text-4xl font-bold">{{ active_plans }}</p></div>
+  <div class="bg-white border border-leaf rounded-xl p-5">
+    <p class="text-sm text-ink/70 mb-2">Fitness goals</p>
+    {% for g in distribution %}
+    <div class="mb-2">
+      <div class="flex justify-between text-xs"><span>{{ g.label }}</span><span>{{ g.count }} ({{ g.pct }}%)</span></div>
+      <div class="h-2 bg-leaf rounded-full overflow-hidden"><div class="h-full bg-sun" style="width: {{ g.pct }}%"></div></div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<section aria-labelledby="dir-h">
+  <h2 id="dir-h" class="display text-xl font-bold mb-3">Member directory</h2>
+  <div class="overflow-x-auto bg-white border border-leaf rounded-xl">
+    <table class="w-full text-sm text-left whitespace-nowrap">
+      <thead class="bg-leaf text-ink/80"><tr>
+        <th class="px-4 py-3 font-semibold">Name</th><th class="px-4 py-3 font-semibold">Username</th><th class="px-4 py-3 font-semibold">Email</th>
+        <th class="px-4 py-3 font-semibold">Goal</th><th class="px-4 py-3 font-semibold">Age</th><th class="px-4 py-3 font-semibold">Joined</th>
+      </tr></thead>
+      <tbody>
+        {% for m in members %}
+        <tr class="border-t border-leaf">
+          <td class="px-4 py-3">{{ m.full_name }}</td><td class="px-4 py-3">{{ m.username }}</td><td class="px-4 py-3">{{ m.email }}</td>
+          <td class="px-4 py-3">{{ m.fitness_goal }}</td><td class="px-4 py-3">{{ m.age }}</td><td class="px-4 py-3">{{ m.created_at|date:"M j, Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="px-4 py-6 text-center text-ink/70">No members have registered yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

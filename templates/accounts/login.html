@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<div class="max-w-md mx-auto">
+  <h1 class="text-3xl font-bold mb-1">Welcome back</h1>
+  <p class="text-ink/70 mb-6">Log in to see your health plan and daily targets.</p>
+  <form method="post" class="bg-white p-5 rounded-xl border border-leaf" novalidate>
+    {% csrf_token %}
+    {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+    {% include "accounts/_field.html" with field=form.username %}
+    {% include "accounts/_field.html" with field=form.password %}
+    <button type="submit" class="btn w-full mt-2">Log in</button>
+  </form>
+  <p class="mt-5 text-center text-sm">New to I'Mobile? <a href="{% url 'register' %}" class="font-semibold text-spruce underline">Create an account</a></p>
+</div>
+{% endblock %}
